@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winston Spadafora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1B2A4A;
+  --blue: #2E5FA3;
+  --blue-light: #4A7DC4;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --off-white: #F7F8FA;
+  --white: #FFFFFF;
+  --text: #1a2236;
+  --muted: #6B7A94;
+  --border: #DDE3EE;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); font-size: 16px; line-height: 1.7; font-weight: 300; overflow-x: hidden; }
+
+/* SCROLL PROGRESS */
+#scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; width: 0%; transition: width 0.1s linear; }
+
+/* NAV */
+nav { position: fixed; top: 2px; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 6%; background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
+nav.scrolled { box-shadow: 0 4px 24px rgba(27,42,74,0.07); }
+.nav-logo { font-family: 'Libre Baskerville', serif; font-size: 1.05rem; color: var(--navy); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: 1.75rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.25s ease; }
+.nav-links a.active { color: var(--navy); }
+.nav-links a.active::after { width: 100%; }
+.nav-links a:hover { color: var(--navy); }
+
+/* LANGUAGE SWITCH */
+.lang-switch { display: flex; align-items: center; gap: 0.15rem; border: 1px solid var(--border); border-radius: 100px; padding: 0.15rem; background: var(--off-white); }
+.lang-btn { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0.3rem 0.7rem; transition: color 0.2s, background 0.2s; font-family: inherit; border-radius: 100px; font-weight: 500; }
+.lang-btn:hover { color: var(--navy); }
+.lang-btn.active { color: #fff; background: var(--navy); }
+
+/* HERO */
+#hero { min-height: 100vh; display: flex; align-items: center; background: var(--navy); padding: 0 6%; position: relative; overflow: hidden; }
+.hero-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 80px 80px; }
+.hero-glow { position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(46,95,163,0.25) 0%, transparent 65%); pointer-events: none; }
+.hero-glow-2 { position: absolute; bottom: -10%; left: 20%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 65%); pointer-events: none; }
+.hero-inner { max-width: 1100px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; position: relative; z-index: 1; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+.hero-eyebrow-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; }
+h1.hero-name { font-family: 'Libre Baskerville', serif; font-size: clamp(2.6rem, 5vw, 4rem); font-weight: 400; color: #fff; line-height: 1.1; margin-bottom: 1.5rem; }
+h1.hero-name span { display: block; font-style: italic; color: rgba(255,255,255,0.42); font-size: 0.72em; margin-top: 0.4rem; }
+.hero-tagline { font-size: 0.97rem; color: rgba(255,255,255,0.52); line-height: 1.85; margin-bottom: 2.5rem; max-width: 420px; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary { display: inline-block; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); background: #fff; padding: 0.85rem 1.8rem; text-decoration: none; border-radius: 2px; font-weight: 500; transition: background 0.2s, transform 0.2s; }
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-secondary { display: inline-block; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.18); padding: 0.85rem 1.8rem; text-decoration: none; border-radius: 2px; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
+.btn-secondary:hover { border-color: rgba(255,255,255,0.45); color: #fff; transform: translateY(-1px); }
+
+.hero-right { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.hero-stat { background: rgba(255,255,255,0.04); padding: 1.5rem 1.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.25s; }
+.hero-stat:last-child { border-bottom: none; }
+.hero-stat:hover { background: rgba(255,255,255,0.07); }
+.hero-stat-number { font-family: 'Libre Baskerville', serif; font-size: 1.9rem; font-weight: 400; color: #fff; line-height: 1; margin-bottom: 0.3rem; }
+.hero-stat-number.gold { color: var(--gold); }
+.hero-stat-label { font-size: 0.76rem; color: rgba(255,255,255,0.38); }
+
+/* LOCATION PILLS */
+.location-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 2rem; }
+.pill { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.45); }
+.pill.active-pill { border-color: var(--gold); color: var(--gold); }
+
+/* SECTIONS */
+.section { padding: 6rem 6%; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem; font-weight: 500; }
+.section-title { font-family: 'Libre Baskerville', serif; font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 400; color: var(--navy); margin-bottom: 3.5rem; line-height: 1.2; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ABOUT */
+#about { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: start; }
+.about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: 0.97rem; }
+.about-text p strong { color: var(--text); font-weight: 500; }
+.aside-block { padding: 1.4rem 0; border-bottom: 1px solid var(--border); }
+.aside-block:first-child { border-top: 1px solid var(--border); }
+.aside-label { font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.4rem; font-weight: 500; }
+.aside-value { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+
+/* WHAT I BRING */
+#bring { background: var(--off-white); border-bottom: 1px solid var(--border); }
+.bring-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; }
+.bring-card { background: var(--white); border: 1px solid var(--border); border-radius: 3px; padding: 2rem 1.75rem; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.bring-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(27,42,74,0.08); }
+.bring-number { font-family: 'Libre Baskerville', serif; font-size: 0.8rem; color: var(--gold); margin-bottom: 1rem; font-style: italic; }
+.bring-title { font-size: 0.95rem; font-weight: 500; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.4; }
+.bring-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.78; }
+
+/* EXPERIENCE */
+#experience { border-bottom: 1px solid var(--border); }
+.exp-item { display: grid; grid-template-columns: 180px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+.exp-item:last-child { border-bottom: none; }
+.exp-company { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.35rem; font-weight: 500; }
+.exp-period { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.2rem; }
+.exp-location { font-size: 0.74rem; color: var(--muted); opacity: 0.65; }
+.exp-role { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; font-weight: 400; color: var(--navy); margin-bottom: 1rem; }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.exp-bullets li { font-size: 0.9rem; color: var(--muted); padding-left: 1.1rem; position: relative; line-height: 1.7; }
+.exp-bullets li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 5px; height: 1px; background: var(--gold); }
+.exp-tag { display: inline-block; font-size: 0.63rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 0.2rem 0.6rem; border-radius: 2px; margin-bottom: 0.75rem; }
+
+/* PROJECTS */
+#projects { background: var(--off-white); border-bottom: 1px solid var(--border); }
+.projects-intro { font-size: 0.97rem; color: var(--muted); max-width: 600px; margin-bottom: 3rem; line-height: 1.8; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+.project-card { background: var(--white); border: 1px solid var(--border); border-radius: 3px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(27,42,74,0.08); }
+.project-card.in-dev { border-style: dashed; background: transparent; }
+.project-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.project-tag { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); background: #EEF3FB; padding: 0.3rem 0.7rem; border-radius: 2px; font-weight: 500; white-space: nowrap; }
+.project-tag.in-dev-tag { color: var(--gold); background: rgba(201,168,76,0.12); }
+.project-type { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.project-type.group { color: var(--blue); }
+.project-type.in-dev { color: var(--gold); }
+.project-title { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 400; color: var(--navy); line-height: 1.35; }
+.project-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.78; flex: 1; }
+.project-credits { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+.project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.project-tool { font-size: 0.74rem; color: var(--muted); border: 1px solid var(--border); padding: 0.25rem 0.65rem; border-radius: 2px; }
+.project-footer { margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.project-downloads { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.project-download { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); background: #EEF3FB; padding: 0.3rem 0.7rem; border-radius: 2px; font-weight: 500; text-decoration: none; transition: background 0.2s, color 0.2s; }
+.project-download:hover { background: var(--blue); color: #fff; }
+.project-link { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+.project-link:hover { color: var(--navy); }
+.project-link.disabled { color: var(--muted); cursor: default; }
+.project-date { font-size: 0.74rem; color: var(--muted); }
+
+/* SKILLS */
+#skills { background: var(--navy); border-bottom: 1px solid rgba(255,255,255,0.08); }
+#skills .section-label { color: var(--gold); }
+#skills .section-title { color: #fff; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; }
+.skill-group-label { font-size: 0.67rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.32); margin-bottom: 1rem; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.skill-tag { font-size: 0.8rem; color: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.1); padding: 0.35rem 0.85rem; border-radius: 3px; transition: border-color 0.2s, color 0.2s; }
+.skill-tag:hover { border-color: var(--gold); color: var(--gold-light); }
+
+/* BEYOND */
+#beyond { border-bottom: 1px solid var(--border); }
+.beyond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.beyond-text { font-size: 0.97rem; color: var(--muted); line-height: 1.85; }
+.beyond-text p { margin-bottom: 1.2rem; }
+.beyond-text strong { color: var(--text); font-weight: 500; }
+.interest-list { list-style: none; display: flex; flex-direction: column; }
+.interest-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
+.interest-item:first-child { border-top: 1px solid var(--border); }
+.interest-icon { font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; width: 2rem; text-align: center; }
+.interest-title { font-size: 0.9rem; font-weight: 500; color: var(--navy); margin-bottom: 0.2rem; }
+.interest-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+/* LANG BARS */
+.lang-bars { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem; }
+.lang-bar-item { display: flex; flex-direction: column; gap: 0.4rem; }
+.lang-bar-top { display: flex; justify-content: space-between; }
+.lang-name { font-size: 0.85rem; font-weight: 500; color: var(--navy); }
+.lang-level { font-size: 0.75rem; color: var(--muted); }
+.lang-track { height: 3px; background: var(--border); border-radius: 100px; overflow: hidden; }
+.lang-fill { height: 100%; border-radius: 100px; background: var(--gold); width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+/* CONTACT */
+#contact { background: var(--white); border-top: 1px solid var(--border); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.contact-headline { font-family: 'Libre Baskerville', serif; font-size: 1.55rem; font-weight: 400; color: var(--navy); line-height: 1.45; margin-bottom: 1.2rem; }
+.contact-headline em { font-style: italic; color: var(--blue); }
+.contact-sub { font-size: 0.88rem; color: var(--muted); line-height: 1.85; }
+.contact-row { display: flex; flex-direction: column; gap: 0.2rem; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
+.contact-row:first-child { border-top: 1px solid var(--border); }
+.contact-row-label { font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
+.contact-row-value { font-size: 0.9rem; color: var(--text); text-decoration: none; }
+a.contact-row-value:hover { color: var(--blue); }
+.availability-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; font-size: 0.75rem; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 100px; }
+.availability-dot { width: 7px; height: 7px; background: #3EC97A; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+footer { background: var(--navy); padding: 1.5rem 6%; text-align: center; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.22); }
+
+.fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.75s ease forwards; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+.d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.25s; } .d3 { animation-delay: 0.4s; } .d4 { animation-delay: 0.55s; } .d5 { animation-delay: 0.7s; } .d6 { animation-delay: 0.85s; }
+
+@media (max-width: 900px) {
+  .hero-inner, .about-grid, .contact-grid, .beyond-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-right { display: none; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.75rem; }
+  .nav-links { display: none; }
+  .nav-right { gap: 0.75rem; }
+  .projects-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">Winston Spadafora</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#bring" data-i18n="nav.bring">What I Bring</a></li>
+      <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+      <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+      <li><a href="#beyond" data-i18n="nav.beyond">Beyond the Numbers</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+      <button class="lang-btn" data-lang="it">IT</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <span class="hero-eyebrow fade-in d1"><span class="hero-eyebrow-dot"></span> <span data-i18n="hero.eyebrow">Finance · International Business · Penn State Smeal</span></span>
+      <h1 class="hero-name fade-in d2">Winston Spadafora<span data-i18n="hero.graduating">Graduating May 2026</span></h1>
+      <p class="hero-tagline fade-in d3" data-i18n="hero.tagline">Finance student with real banking experience in Panama. Analytically grounded, internationally positioned, and genuinely at home across cultures and contexts.</p>
+      <div class="hero-btns fade-in d4">
+        <a href="#contact" class="btn-primary" data-i18n="hero.cta1">Get in Touch</a>
+        <a href="#experience" class="btn-secondary" data-i18n="hero.cta2">View Experience</a>
+      </div>
+      <div class="location-pills fade-in d5">
+        <span class="pill active-pill">Panama City</span>
+        <span class="pill active-pill">Rome</span>
+        <span class="pill">Madrid</span>
+        <span class="pill">State College, PA</span>
+      </div>
+    </div>
+    <div class="hero-right fade-in d6">
+      <div class="hero-stat"><div class="hero-stat-number">3.51 / 4.00</div><div class="hero-stat-label" data-i18n="hero.stat1">GPA, Smeal College of Business</div></div>
+      <div class="hero-stat"><div class="hero-stat-number">2</div><div class="hero-stat-label" data-i18n="hero.stat2">Banking internships in Panama City</div></div>
+      <div class="hero-stat"><div class="hero-stat-number gold">IT + PA</div><div class="hero-stat-label" data-i18n="hero.stat3">Dual Italian and Panamanian citizenship, no visa friction</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div id="about" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="about.label">Background</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="about.title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text reveal reveal-delay-2">
+        <p data-i18n="about.p1">I am a Finance major at <strong>Penn State, Smeal College of Business</strong>, graduating May 2026 with a 3.51 / 4.00 GPA and a minor in International Business. I grew up in Panama and came to the US for university, which gave me an early perspective on how different markets operate and how business moves between them.</p>
+        <p data-i18n="about.p2">My work experience has been in <strong>Panama's banking sector</strong>. At Metrobank, I built FP&A reporting tools used by senior leadership to monitor a $1.9B bank. At MMG Bank, I handled FATCA and CRS regulatory reporting and automated compliance workflows under tight deadlines. Both roles involved real stakes and real consequences, not classroom exercises.</p>
+        <p data-i18n="about.p3">I studied abroad at the <strong>Universidad Complutense de Madrid</strong> in spring 2025. That experience reinforced something I already knew about myself: I adapt well to new environments, stay open to new experiences, and work comfortably across cultures. I pick up on context quickly and prefer environments where people come from different places and perspectives.</p>
+        <p data-i18n="about.p4">I hold dual Italian and Panamanian citizenship, and I speak Spanish natively and English fluently. Learning Italian properly is on my list. <strong>Panama City is my primary target market</strong>, and I am open to Rome if the right opportunity comes up. I am not locked into one finance track. I am drawn to environments where the analysis is serious, the stakes are real, and the people I am working with operate across borders or inside institutions that move meaningful capital.</p>
+      </div>
+      <div class="about-aside reveal reveal-delay-3">
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.education.label">Education</p><p class="aside-value" data-i18n="about.aside.education.value">B.S. Finance, Minor in International Business<br>Penn State, Smeal College of Business</p></div>
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.abroad.label">Study Abroad</p><p class="aside-value" data-i18n="about.aside.abroad.value">Universidad Complutense de Madrid<br>Spring 2025</p></div>
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.citizen.label">Citizenship</p><p class="aside-value" data-i18n="about.aside.citizen.value">Italian · Panamanian<br><span style="font-size:0.82rem; color: var(--muted);">No visa friction in the EU or Panama</span></p></div>
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.lang.label">Languages</p><p class="aside-value" data-i18n="about.aside.lang.value">Spanish (native) · English (fluent)</p></div>
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.open.label">Open to Work In</p><p class="aside-value" data-i18n="about.aside.open.value">Panama City · Rome · United States</p></div>
+        <div class="aside-block"><p class="aside-label" data-i18n="about.aside.avail.label">Availability</p><p class="aside-value" data-i18n="about.aside.avail.value">Open to Work starting May 2026</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT I BRING -->
+<div id="bring" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="bring.label">Value</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="bring.title">What I Bring</h2>
+    <div class="bring-grid">
+      <div class="bring-card reveal reveal-delay-1">
+        <p class="bring-number">01</p>
+        <p class="bring-title" data-i18n="bring.c1.title">Real Financial Analysis Experience</p>
+        <p class="bring-desc" data-i18n="bring.c1.desc">I have built reporting tools that went into production at a $1.9B bank, presented frameworks to VPs, and handled regulatory data with actual consequences. Not simulations.</p>
+      </div>
+      <div class="bring-card reveal reveal-delay-2">
+        <p class="bring-number">02</p>
+        <p class="bring-title" data-i18n="bring.c2.title">Compliance Fluency Most Analysts Don't Have</p>
+        <p class="bring-desc" data-i18n="bring.c2.desc">FATCA, CRS, PEP screening, SBP Agreement 1-2025. I worked with these frameworks at a real bank under real deadlines. That combination is rare for someone at my level.</p>
+      </div>
+      <div class="bring-card reveal reveal-delay-3">
+        <p class="bring-number">03</p>
+        <p class="bring-title" data-i18n="bring.c3.title">Genuine International Mobility</p>
+        <p class="bring-desc" data-i18n="bring.c3.desc">Italian and Panamanian citizenship means I can work in the EU or Panama from day one. No sponsorship timelines, no waiting. That is a concrete operational advantage for any cross-border team.</p>
+      </div>
+      <div class="bring-card reveal reveal-delay-4">
+        <p class="bring-number">04</p>
+        <p class="bring-title" data-i18n="bring.c4.title">Cross-Cultural Fluency</p>
+        <p class="bring-desc" data-i18n="bring.c4.desc">Grew up in Panama, studied in the US, spent a semester in Madrid. Native Spanish, fluent English. I know how to operate in different business environments without a long adjustment period.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div id="experience" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="exp.label">Career</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="exp.title">Experience</h2>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <p class="exp-company">MMG Bank</p>
+          <p class="exp-period" data-i18n="exp.mmg.period">May 2025 to Aug 2025</p>
+          <p class="exp-location" data-i18n="exp.mmg.loc">Panama City, Panama</p>
+        </div>
+        <div class="exp-content">
+          <span class="exp-tag" data-i18n="exp.mmg.tag">Compliance · Regulatory Reporting</span>
+          <h3 class="exp-role" data-i18n="exp.mmg.role">Legal & Compliance Intern</h3>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.mmg.b1">Automated FATCA and CRS regulatory reporting for 6,000+ accounts across two international entities, replacing a fully manual process and establishing the foundation for long-term reporting efficiency.</li>
+            <li data-i18n="exp.mmg.b2">Led a full 3-week reporting cycle under strict regulatory deadlines, preparing and validating XML submissions and resolving data discrepancies across 300+ accounts for the Panamanian Tax Authority (DGI).</li>
+            <li data-i18n="exp.mmg.b3">Built the bank's first centralized PEP catalog covering 10,000+ records to ensure compliance with SBP Agreement 1-2025 and standardize due diligence controls across the organization.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <p class="exp-company">Metrobank, S.A.</p>
+          <p class="exp-period" data-i18n="exp.metro.period">Jul 2024 to Aug 2024</p>
+          <p class="exp-location" data-i18n="exp.metro.loc">Panama City, Panama</p>
+        </div>
+        <div class="exp-content">
+          <span class="exp-tag" data-i18n="exp.metro.tag">FP&A · Financial Reporting</span>
+          <h3 class="exp-role" data-i18n="exp.metro.role">Finance Intern</h3>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.metro.b1">Built an automated Excel-based reporting tool consolidating monthly and annual performance across 4+ business lines for a $1.9B asset bank.</li>
+            <li data-i18n="exp.metro.b2">Integrated Cognos data to automate variance analysis and KPI tracking across a $35M+ annual expense base, replacing a consolidation process that previously took multiple weeks.</li>
+            <li data-i18n="exp.metro.b3">Presented the reporting framework to three Vice Presidents, refining metrics and improving the timeliness of financial results across business units.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <p class="exp-company">Penn State University</p>
+          <p class="exp-period" data-i18n="exp.psu.period">Sep 2025 to May 2026</p>
+          <p class="exp-location" data-i18n="exp.psu.loc">State College, PA</p>
+        </div>
+        <div class="exp-content">
+          <span class="exp-tag" data-i18n="exp.psu.tag">Service · Community</span>
+          <h3 class="exp-role" data-i18n="exp.psu.role">Front Desk, Commons Residential Community</h3>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.psu.b1">Handle daily package logistics, mail distribution, and resident check-ins using internal tracking systems, maintaining accurate records across a residential community of hundreds of students.</li>
+            <li data-i18n="exp.psu.b2">Serve as the first point of contact for a high-traffic residential community while carrying a full course load through my final year at Penn State.</li>
+            <li data-i18n="exp.psu.b3">Manage a steady flow of resident needs, logistics, and real-time problem-solving across a diverse student population. It is not finance, but it keeps you grounded and sharpens how you deal with people from different backgrounds under pressure.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <p class="exp-company">BBT Corporation</p>
+          <p class="exp-period" data-i18n="exp.bbt.period">Mar 2022 to Jul 2022</p>
+          <p class="exp-location" data-i18n="exp.bbt.loc">Panama City, Panama</p>
+        </div>
+        <div class="exp-content">
+          <span class="exp-tag" data-i18n="exp.bbt.tag">Accounting · Operations</span>
+          <h3 class="exp-role" data-i18n="exp.bbt.role">Accounting Intern</h3>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.bbt.b1">Compiled and analyzed daily revenue and expense reports across 15 operations, preparing consolidated monthly financial summaries for management oversight of multi-location performance.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div id="projects" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="proj.label">Selected Work</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="proj.title">Personal Projects</h2>
+    <p class="projects-intro reveal reveal-delay-2" data-i18n="proj.intro">A mix of independent and group work from coursework and outside the classroom. Each one is something I was genuinely invested in, not a box-checking exercise.</p>
+    <div class="projects-grid">
+
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-top">
+          <h3 class="project-title" data-i18n="proj.wmt.title">Walmart (NYSE: WMT) Equity Research</h3>
+          <span class="project-tag" data-i18n="proj.wmt.tag">Valuation</span>
+        </div>
+        <p class="project-type" data-i18n="proj.type.independent">Independent Project</p>
+        <p class="project-desc" data-i18n="proj.wmt.desc">Initiated coverage on Walmart with an Overweight rating and a $97 price target, built on a 70 / 30 blended DCF and trading comps. The thesis: the market is underpricing Walmart's margin expansion from higher-margin revenue streams like Walmart Connect (advertising) and Walmart+. Modeled EBIT margin reaching 6.2% by FY2031 against a consensus of roughly 4.8%, and defended the 140bps gap as the real source of upside. Includes a full sensitivity table across WACC and exit multiples.</p>
+        <div class="project-tools">
+          <span class="project-tool">DCF</span><span class="project-tool">Trading Comps</span><span class="project-tool">Sensitivity Analysis</span><span class="project-tool">Excel</span>
+        </div>
+        <div class="project-footer">
+          <div class="project-downloads">
+            <a href="WMT_Equity_Research_Report.docx" download target="_blank" rel="noopener" class="project-download" data-i18n="proj.dl.report">Download Report</a>
+            <a href="WMT_Equity_Research_Model_FINAL.xlsx" download target="_blank" rel="noopener" class="project-download" data-i18n="proj.dl.model">Download Model</a>
+          </div>
+          <span class="project-date">2025 - 2026</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-top">
+          <h3 class="project-title" data-i18n="proj.fatca.title">FATCA and CRS vs. Game Theory</h3>
+          <span class="project-tag" data-i18n="proj.fatca.tag">Compliance · Game Theory</span>
+        </div>
+        <p class="project-type" data-i18n="proj.type.independent">Independent Project</p>
+        <p class="project-desc" data-i18n="proj.fatca.desc">I built this site mostly because I connected game theory with tax compliance after studying it in class, and I wanted to make something where the reader could walk away understanding more about compliance while also getting a sense of how I think through problems. The experience is interactive. You click through FATCA and CRS framed as a coordination game where each banking jurisdiction decides whether to cooperate with automatic information exchange or defect. Try it, it only takes a few minutes.</p>
+        <div class="project-tools">
+          <span class="project-tool">Game Theory</span><span class="project-tool">Tax Compliance</span><span class="project-tool">Web Build</span>
+        </div>
+        <div class="project-footer">
+          <a href="https://wms-fatca-game.vercel.app/" target="_blank" rel="noopener" class="project-link" data-i18n="proj.fatca.link">View Live Site</a>
+          <span class="project-date">2026</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-top">
+          <h3 class="project-title" data-i18n="proj.gig.title">GigLedger: FinTech Series A Pitch</h3>
+          <span class="project-tag" data-i18n="proj.gig.tag">VC Valuation · FinTech</span>
+        </div>
+        <p class="project-type group" data-i18n="proj.type.group">Group Project</p>
+        <p class="project-desc" data-i18n="proj.gig.desc">Developed and pitched GigLedger, an original FinTech concept targeting the 64M+ Americans in the gig economy. The platform combines four services into one: automated tax withholding, invoice financing, income smoothing, and gig-calibrated retirement. I led the technical architecture side of the pitch. Together we built the full investment case including market sizing, four-tier revenue model, DCF valuation, WACC derivation, and a $15M Series A ask at a $45M pre-money valuation. Defended assumptions under investor-style pushback.</p>
+        <p class="project-credits" data-i18n="proj.gig.credits">With Ramin Khan (CEO) and Jonathan Chin (CFO).</p>
+        <div class="project-tools">
+          <span class="project-tool">VC Valuation</span><span class="project-tool">DCF</span><span class="project-tool">Market Sizing</span><span class="project-tool">Financial Modeling</span>
+        </div>
+        <div class="project-footer">
+          <div class="project-downloads">
+            <a href="GigLedger_Pitch_Deck.pdf" download target="_blank" rel="noopener" class="project-download" data-i18n="proj.dl.deck">Download Deck</a>
+            <a href="GigLedger_FinancialModel.xlsx" download target="_blank" rel="noopener" class="project-download" data-i18n="proj.dl.model">Download Model</a>
+          </div>
+          <span class="project-date" data-i18n="proj.gig.date">Spring 2026</span>
+        </div>
+      </div>
+
+      <div class="project-card in-dev reveal reveal-delay-4">
+        <div class="project-top">
+          <h3 class="project-title" data-i18n="proj.pty.title">Why Venture Capital Hasn't Taken Root in Panama</h3>
+          <span class="project-tag in-dev-tag" data-i18n="proj.pty.tag">Research</span>
+        </div>
+        <p class="project-type in-dev" data-i18n="proj.type.indev">In Development</p>
+        <p class="project-desc" data-i18n="proj.pty.desc">Research paper examining why Panama, despite its role as a regional financial hub, lacks a meaningful venture capital ecosystem. Comparative analysis against Chile, Colombia, and Mexico across legal infrastructure for startups, IP protection, exit opportunities, tax incentives, and talent pool. Target length 8 to 12 pages with supporting data, charts, and sources. The working subtitle is "A Structural Diagnosis."</p>
+        <div class="project-tools">
+          <span class="project-tool">Structural Analysis</span><span class="project-tool">Comparative Research</span><span class="project-tool">LATAM Finance</span>
+        </div>
+        <div class="project-footer">
+          <span class="project-link disabled" data-i18n="proj.pty.status">In Progress</span>
+          <span class="project-date">2026</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div id="skills" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="skills.label">Toolkit</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="skills.title">Skills, Certifications & Awards</h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal reveal-delay-1">
+        <p class="skill-group-label" data-i18n="skills.g1">Technical</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Excel (Advanced)</span><span class="skill-tag">VBA</span><span class="skill-tag">Python</span><span class="skill-tag">Power BI</span><span class="skill-tag">MySQL</span><span class="skill-tag">Cognos</span>
+        </div>
+      </div>
+      <div class="skill-group reveal reveal-delay-2">
+        <p class="skill-group-label" data-i18n="skills.g2">Finance</p>
+        <div class="skill-tags">
+          <span class="skill-tag" data-i18n="skills.fm">Financial Modeling</span><span class="skill-tag" data-i18n="skills.dcf">DCF Valuation</span><span class="skill-tag" data-i18n="skills.fpa">FP&A Reporting</span><span class="skill-tag" data-i18n="skills.var">Variance Analysis</span><span class="skill-tag" data-i18n="skills.kpi">KPI Dashboards</span><span class="skill-tag" data-i18n="skills.pa">Portfolio Analysis</span><span class="skill-tag" data-i18n="skills.mc">Monte Carlo Simulation</span>
+        </div>
+      </div>
+      <div class="skill-group reveal reveal-delay-3">
+        <p class="skill-group-label" data-i18n="skills.g3">Compliance</p>
+        <div class="skill-tags">
+          <span class="skill-tag" data-i18n="skills.fc">FATCA / CRS Reporting</span><span class="skill-tag" data-i18n="skills.pep">PEP Screening</span><span class="skill-tag" data-i18n="skills.xml">XML Validation</span>
+        </div>
+      </div>
+      <div class="skill-group reveal reveal-delay-4">
+        <p class="skill-group-label" data-i18n="skills.g4">Certifications & Awards</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Bloomberg Finance Fundamentals</span><span class="skill-tag">Bloomberg Spreadsheet Analysis</span><span class="skill-tag">Bloomberg Query Language</span><span class="skill-tag" data-i18n="skills.bmc">Bloomberg Market Concepts (In Progress)</span><span class="skill-tag">Provost Award</span><span class="skill-tag" data-i18n="skills.dl">Dean's List (3 semesters)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEYOND -->
+<div id="beyond" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="bey.label">The Full Picture</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="bey.title">Beyond the Numbers</h2>
+    <div class="beyond-grid">
+      <div class="reveal reveal-delay-2">
+        <div class="beyond-text">
+          <p data-i18n="bey.p1">Finance is what I do, but it is not all I am. I grew up in Panama, studied at Penn State in State College, and spent a semester in Madrid. Those experiences shaped how I read a room, pick up on context, and connect with people from different backgrounds.</p>
+          <p data-i18n="bey.p2">I like the outdoors. I have been fishing the Pacific since I was a kid, and I play golf whenever I can. When I travel, I enjoy eating, seeing how people do business differently, and picking up context you cannot get from a report. These are not resume fillers. They are the kinds of things that come up in the conversations that actually matter, and I have learned that the ability to connect with someone over something real is often as valuable as whatever is on the spreadsheet.</p>
+          <p data-i18n="bey.p3">I am also genuinely curious about how the world is organized. After learning about game theory in class, I started seeing how the same logic applied to things like tax compliance and cross-border coordination. That kind of cross-wiring is what makes finance interesting to me in the first place.</p>
+        </div>
+        <div style="margin-top: 2.5rem;">
+          <p class="section-label" style="margin-bottom: 1rem;" data-i18n="bey.lang">Languages</p>
+          <div class="lang-bars" id="lang-bars">
+            <div class="lang-bar-item">
+              <div class="lang-bar-top"><span class="lang-name" data-i18n="bey.es">Spanish</span><span class="lang-level" data-i18n="bey.native">Native</span></div>
+              <div class="lang-track"><div class="lang-fill" data-width="100"></div></div>
+            </div>
+            <div class="lang-bar-item">
+              <div class="lang-bar-top"><span class="lang-name" data-i18n="bey.en">English</span><span class="lang-level" data-i18n="bey.fluent">Fluent</span></div>
+              <div class="lang-track"><div class="lang-fill" data-width="95"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-3">
+        <ul class="interest-list">
+          <li class="interest-item">
+            <span class="interest-icon">🎣</span>
+            <div class="interest-content">
+              <p class="interest-title" data-i18n="bey.int.fish.title">Sportfishing</p>
+              <p class="interest-desc" data-i18n="bey.int.fish.desc">Grew up fishing the Pacific coast of Panama. Offshore fishing is what I am used to. There is no better lesson in reading conditions and staying patient than a long day on the water.</p>
+            </div>
+          </li>
+          <li class="interest-item">
+            <span class="interest-icon">⛳</span>
+            <div class="interest-content">
+              <p class="interest-title" data-i18n="bey.int.golf.title">Golf</p>
+              <p class="interest-desc" data-i18n="bey.int.golf.desc">I play because it is genuinely fun, and because it forces me to keep my head together when I am playing badly. When a bad shot is nobody's fault but mine, I learn a lot about how I handle frustration.</p>
+            </div>
+          </li>
+          <li class="interest-item">
+            <span class="interest-icon">✈️</span>
+            <div class="interest-content">
+              <p class="interest-title" data-i18n="bey.int.travel.title">International Travel and Cuisine</p>
+              <p class="interest-desc" data-i18n="bey.int.travel.desc">I have spent time in Panama, the US, Spain, and other parts of Europe. I go to eat well, to see how people do business differently, and to pick up context you cannot get from a report.</p>
+            </div>
+          </li>
+          <li class="interest-item">
+            <span class="interest-icon">📈</span>
+            <div class="interest-content">
+              <p class="interest-title" data-i18n="bey.int.mkt.title">Financial Markets</p>
+              <p class="interest-desc" data-i18n="bey.int.mkt.desc">I follow markets because I find the dynamics genuinely interesting, especially at the intersection of macroeconomics, geopolitics, and capital flows. I find it fascinating how a single presidential decision or a single corporate announcement can move billions in market value overnight. I read Morning Brew, the NYT, and Bloomberg News regularly to stay on top of what is actually happening.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal" data-i18n="con.label">Let's Talk</p>
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="con.title">Contact</h2>
+    <div class="contact-grid">
+      <div class="reveal reveal-delay-2">
+        <p class="contact-headline" data-i18n="con.head">Open to opportunities in <em>Panama City</em>, <em>Rome</em>, and the <em>United States</em>.</p>
+        <p class="contact-sub" data-i18n="con.sub">Finance, FP&A, banking, and advisory environments are all on the table. If the work is serious and interesting, I want to hear from you. Cross-border roles are welcome.</p>
+        <div class="availability-badge">
+          <span class="availability-dot"></span>
+          <span data-i18n="con.avail">Open to Work starting May 2026</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div class="contact-row"><span class="contact-row-label" data-i18n="con.email">Email</span><a href="mailto:wmspadafora@gmail.com" class="contact-row-value">wmspadafora@gmail.com</a></div>
+        <div class="contact-row"><span class="contact-row-label" data-i18n="con.linkedin">LinkedIn</span><a href="https://linkedin.com/in/wspadafora" target="_blank" class="contact-row-value">linkedin.com/in/wspadafora</a></div>
+        <div class="contact-row"><span class="contact-row-label" data-i18n="con.based">Based</span><span class="contact-row-value" data-i18n="con.based.val">Panama City, Panama · Currently State College, PA · Available to relocate May 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer data-i18n="footer">Winston Spadafora &nbsp;·&nbsp; Finance and International Business &nbsp;·&nbsp; 2026</footer>
+
+<script>
+const i18n = {
+  // NAV
+  'nav.about': { en: 'About', es: 'Perfil', it: 'Profilo' },
+  'nav.bring': { en: 'What I Bring', es: 'Lo Que Aporto', it: 'Cosa Offro' },
+  'nav.experience': { en: 'Experience', es: 'Experiencia', it: 'Esperienza' },
+  'nav.projects': { en: 'Projects', es: 'Proyectos', it: 'Progetti' },
+  'nav.beyond': { en: 'Beyond the Numbers', es: 'Más Allá de los Números', it: 'Oltre i Numeri' },
+  'nav.contact': { en: 'Contact', es: 'Contacto', it: 'Contatti' },
+
+  // HERO
+  'hero.eyebrow': {
+    en: 'Finance · International Business · Penn State Smeal',
+    es: 'Finanzas · Negocios Internacionales · Penn State Smeal',
+    it: 'Finanza · Business Internazionale · Penn State Smeal'
+  },
+  'hero.graduating': {
+    en: 'Graduating May 2026',
+    es: 'Graduación en mayo 2026',
+    it: 'Laurea a maggio 2026'
+  },
+  'hero.tagline': {
+    en: 'Finance student with real banking experience in Panama. Analytically grounded, internationally positioned, and genuinely at home across cultures and contexts.',
+    es: 'Estudiante de finanzas con experiencia real en el sector bancario panameño. Sólido en el análisis, con proyección internacional, y genuinamente cómodo entre culturas y contextos distintos.',
+    it: 'Studente di finanza con esperienza concreta nel settore bancario panamense. Solido sul piano analitico, con prospettiva internazionale, e genuinamente a mio agio tra culture e contesti diversi.'
+  },
+  'hero.cta1': { en: 'Get in Touch', es: 'Contáctame', it: 'Contattami' },
+  'hero.cta2': { en: 'View Experience', es: 'Ver Experiencia', it: 'Vedi Esperienza' },
+  'hero.stat1': {
+    en: 'GPA, Smeal College of Business',
+    es: 'Promedio académico, Smeal College of Business',
+    it: 'Media voti, Smeal College of Business'
+  },
+  'hero.stat2': {
+    en: 'Banking internships in Panama City',
+    es: 'Pasantías en banca en Ciudad de Panamá',
+    it: 'Tirocini nel settore bancario a Città di Panama'
+  },
+  'hero.stat3': {
+    en: 'Dual Italian and Panamanian citizenship, no visa friction',
+    es: 'Doble ciudadanía italiana y panameña, sin trámites de visa',
+    it: 'Doppia cittadinanza italiana e panamense, nessun ostacolo di visto'
+  },
+
+  // ABOUT
+  'about.label': { en: 'Background', es: 'Contexto', it: 'Contesto' },
+  'about.title': { en: 'About Me', es: 'Sobre Mí', it: 'Chi Sono' },
+  'about.p1': {
+    en: 'I am a Finance major at <strong>Penn State, Smeal College of Business</strong>, graduating May 2026 with a 3.51 / 4.00 GPA and a minor in International Business. I grew up in Panama and came to the US for university, which gave me an early perspective on how different markets operate and how business moves between them.',
+    es: 'Estudio Finanzas en <strong>Penn State, Smeal College of Business</strong>, y me gradúo en mayo de 2026 con un promedio de 3.51 / 4.00 y un minor en Negocios Internacionales. Crecí en Panamá y vine a Estados Unidos para la universidad, lo cual me dio desde temprano una perspectiva sobre cómo operan distintos mercados y cómo se mueven los negocios entre ellos.',
+    it: 'Studio Finanza alla <strong>Penn State, Smeal College of Business</strong>, e mi laureerò a maggio 2026 con una media di 3.51 / 4.00 e un minor in Business Internazionale. Sono cresciuto a Panama e mi sono trasferito negli Stati Uniti per l\'università, esperienza che mi ha dato presto una prospettiva su come funzionano mercati diversi e su come il business si muove tra di essi.'
+  },
+  'about.p2': {
+    en: 'My work experience has been in <strong>Panama\'s banking sector</strong>. At Metrobank, I built FP&A reporting tools used by senior leadership to monitor a $1.9B bank. At MMG Bank, I handled FATCA and CRS regulatory reporting and automated compliance workflows under tight deadlines. Both roles involved real stakes and real consequences, not classroom exercises.',
+    es: 'Mi experiencia profesional ha sido en el <strong>sector bancario panameño</strong>. En Metrobank construí herramientas de reportería de FP&A que la alta dirección usa para monitorear un banco con 1.9 mil millones en activos. En MMG Bank manejé los reportes regulatorios de FATCA y CRS y automaticé procesos de cumplimiento bajo plazos ajustados. En ambos roles había riesgos reales y consecuencias reales, no ejercicios de clase.',
+    it: 'La mia esperienza professionale è stata nel <strong>settore bancario panamense</strong>. Alla Metrobank ho sviluppato strumenti di reportistica FP&A utilizzati dal senior management per monitorare una banca con 1,9 miliardi di dollari di attivi. Alla MMG Bank mi sono occupato della reportistica regolamentare FATCA e CRS e ho automatizzato i flussi di compliance entro scadenze rigide. In entrambi i ruoli c\'erano rischi reali e conseguenze reali, non erano esercitazioni accademiche.'
+  },
+  'about.p3': {
+    en: 'I studied abroad at the <strong>Universidad Complutense de Madrid</strong> in spring 2025. That experience reinforced something I already knew about myself: I adapt well to new environments, stay open to new experiences, and work comfortably across cultures. I pick up on context quickly and prefer environments where people come from different places and perspectives.',
+    es: 'Estudié un semestre en la <strong>Universidad Complutense de Madrid</strong> en primavera de 2025. Esa experiencia reafirmó algo que ya sabía de mí mismo: me adapto bien a entornos nuevos, me mantengo abierto a nuevas experiencias, y me muevo con soltura entre culturas. Capto el contexto rápido y prefiero entornos donde la gente viene de distintos lugares y perspectivas.',
+    it: 'Ho studiato un semestre all\'<strong>Universidad Complutense de Madrid</strong> nella primavera 2025. Quell\'esperienza ha confermato una cosa che sapevo già di me: mi adatto bene a nuovi contesti, resto aperto a nuove esperienze e mi muovo con naturalezza tra culture diverse. Colgo il contesto rapidamente e preferisco ambienti in cui le persone arrivano da luoghi e prospettive diverse.'
+  },
+  'about.p4': {
+    en: 'I hold dual Italian and Panamanian citizenship, and I speak Spanish natively and English fluently. Learning Italian properly is on my list. <strong>Panama City is my primary target market</strong>, and I am open to Rome if the right opportunity comes up. I am not locked into one finance track. I am drawn to environments where the analysis is serious, the stakes are real, and the people I am working with operate across borders or inside institutions that move meaningful capital.',
+    es: 'Tengo doble ciudadanía italiana y panameña, hablo español como lengua materna e inglés con fluidez. Aprender italiano bien es algo que tengo pendiente. <strong>Ciudad de Panamá es mi mercado principal</strong>, y estoy abierto a Roma si aparece la oportunidad correcta. No estoy encasillado en una sola rama de finanzas. Me atraen entornos donde el análisis es serio, lo que está en juego es real, y las personas con las que trabajo operan entre jurisdicciones o dentro de instituciones que mueven capital relevante.',
+    it: 'Possiedo la doppia cittadinanza italiana e panamense. Parlo spagnolo come madrelingua e inglese in modo fluente. Imparare l\'italiano come si deve è tra i miei obiettivi. <strong>Città di Panama è il mio mercato primario</strong>, e sono aperto a Roma se arriva l\'opportunità giusta. Non sono vincolato a un unico percorso nella finanza. Mi interessano contesti dove l\'analisi è seria, la posta in gioco è reale, e le persone con cui lavoro operano tra giurisdizioni diverse o all\'interno di istituzioni che muovono capitali significativi.'
+  },
+  'about.aside.education.label': { en: 'Education', es: 'Educación', it: 'Formazione' },
+  'about.aside.education.value': {
+    en: 'B.S. Finance, Minor in International Business<br>Penn State, Smeal College of Business',
+    es: 'Licenciatura en Finanzas, Minor en Negocios Internacionales<br>Penn State, Smeal College of Business',
+    it: 'Laurea in Finanza, Minor in Business Internazionale<br>Penn State, Smeal College of Business'
+  },
+  'about.aside.abroad.label': { en: 'Study Abroad', es: 'Intercambio', it: 'Semestre all\'Estero' },
+  'about.aside.abroad.value': {
+    en: 'Universidad Complutense de Madrid<br>Spring 2025',
+    es: 'Universidad Complutense de Madrid<br>Primavera 2025',
+    it: 'Universidad Complutense de Madrid<br>Primavera 2025'
+  },
+  'about.aside.citizen.label': { en: 'Citizenship', es: 'Ciudadanía', it: 'Cittadinanza' },
+  'about.aside.citizen.value': {
+    en: 'Italian · Panamanian<br><span style="font-size:0.82rem; color: var(--muted);">No visa friction in the EU or Panama</span>',
+    es: 'Italiana · Panameña<br><span style="font-size:0.82rem; color: var(--muted);">Sin trámites de visa en la UE ni en Panamá</span>',
+    it: 'Italiana · Panamense<br><span style="font-size:0.82rem; color: var(--muted);">Nessuna procedura di visto in UE o a Panama</span>'
+  },
+  'about.aside.lang.label': { en: 'Languages', es: 'Idiomas', it: 'Lingue' },
+  'about.aside.lang.value': {
+    en: 'Spanish (native) · English (fluent)',
+    es: 'Español (nativo) · Inglés (fluido)',
+    it: 'Spagnolo (madrelingua) · Inglese (fluente)'
+  },
+  'about.aside.open.label': { en: 'Open to Work In', es: 'Dispuesto a Trabajar En', it: 'Disponibile a Lavorare In' },
+  'about.aside.open.value': {
+    en: 'Panama City · Rome · United States',
+    es: 'Ciudad de Panamá · Roma · Estados Unidos',
+    it: 'Città di Panama · Roma · Stati Uniti'
+  },
+  'about.aside.avail.label': { en: 'Availability', es: 'Disponibilidad', it: 'Disponibilità' },
+  'about.aside.avail.value': {
+    en: 'Open to Work starting May 2026',
+    es: 'Disponible a partir de mayo 2026',
+    it: 'Disponibile a partire da maggio 2026'
+  },
+
+  // BRING
+  'bring.label': { en: 'Value', es: 'Valor', it: 'Valore' },
+  'bring.title': { en: 'What I Bring', es: 'Lo Que Aporto', it: 'Cosa Offro' },
+  'bring.c1.title': {
+    en: 'Real Financial Analysis Experience',
+    es: 'Experiencia Real en Análisis Financiero',
+    it: 'Esperienza Reale in Analisi Finanziaria'
+  },
+  'bring.c1.desc': {
+    en: 'I have built reporting tools that went into production at a $1.9B bank, presented frameworks to VPs, and handled regulatory data with actual consequences. Not simulations.',
+    es: 'He construido herramientas de reportería que entraron en producción en un banco con 1.9 mil millones en activos, presentado frameworks a Vicepresidentes, y manejado datos regulatorios con consecuencias reales. No simulaciones.',
+    it: 'Ho sviluppato strumenti di reportistica entrati in produzione in una banca da 1,9 miliardi di attivi, presentato framework a Vicepresidenti e gestito dati regolamentari con conseguenze reali. Non esercitazioni.'
+  },
+  'bring.c2.title': {
+    en: 'Compliance Fluency Most Analysts Don\'t Have',
+    es: 'Dominio de Compliance Poco Común a Mi Nivel',
+    it: 'Dimestichezza con la Compliance Rara a Questo Livello'
+  },
+  'bring.c2.desc': {
+    en: 'FATCA, CRS, PEP screening, SBP Agreement 1-2025. I worked with these frameworks at a real bank under real deadlines. That combination is rare for someone at my level.',
+    es: 'FATCA, CRS, screening de PEP, Acuerdo 1-2025 de la SBP. Trabajé con estos marcos en un banco real bajo fechas límite reales. Esa combinación es poco común en alguien de mi nivel.',
+    it: 'FATCA, CRS, screening PEP, Accordo 1-2025 della SBP. Ho lavorato con questi framework in una banca vera, sotto scadenze reali. È una combinazione rara a questo livello di esperienza.'
+  },
+  'bring.c3.title': {
+    en: 'Genuine International Mobility',
+    es: 'Movilidad Internacional Real',
+    it: 'Mobilità Internazionale Concreta'
+  },
+  'bring.c3.desc': {
+    en: 'Italian and Panamanian citizenship means I can work in the EU or Panama from day one. No sponsorship timelines, no waiting. That is a concrete operational advantage for any cross-border team.',
+    es: 'Tener ciudadanía italiana y panameña significa que puedo trabajar en la UE o en Panamá desde el primer día. Sin trámites de patrocinio, sin esperas. Eso es una ventaja operativa concreta para cualquier equipo transfronterizo.',
+    it: 'La cittadinanza italiana e panamense mi permette di lavorare in UE o a Panama dal primo giorno. Nessun iter di sponsorship, nessuna attesa. È un vantaggio operativo concreto per qualsiasi team che opera tra più giurisdizioni.'
+  },
+  'bring.c4.title': {
+    en: 'Cross-Cultural Fluency',
+    es: 'Fluidez Intercultural',
+    it: 'Fluidità Interculturale'
+  },
+  'bring.c4.desc': {
+    en: 'Grew up in Panama, studied in the US, spent a semester in Madrid. Native Spanish, fluent English. I know how to operate in different business environments without a long adjustment period.',
+    es: 'Crecí en Panamá, estudié en Estados Unidos, pasé un semestre en Madrid. Español nativo, inglés fluido. Sé cómo moverme en distintos entornos de negocio sin necesitar un período largo de adaptación.',
+    it: 'Cresciuto a Panama, ho studiato negli Stati Uniti e ho trascorso un semestre a Madrid. Spagnolo madrelingua, inglese fluente. So muovermi in contesti di business diversi senza bisogno di un lungo periodo di adattamento.'
+  },
+
+  // EXPERIENCE
+  'exp.label': { en: 'Career', es: 'Trayectoria', it: 'Percorso' },
+  'exp.title': { en: 'Experience', es: 'Experiencia', it: 'Esperienza' },
+
+  'exp.mmg.period': { en: 'May 2025 to Aug 2025', es: 'Mayo 2025 a Agosto 2025', it: 'Maggio 2025 a Agosto 2025' },
+  'exp.mmg.loc': { en: 'Panama City, Panama', es: 'Ciudad de Panamá, Panamá', it: 'Città di Panama, Panama' },
+  'exp.mmg.tag': { en: 'Compliance · Regulatory Reporting', es: 'Compliance · Reportes Regulatorios', it: 'Compliance · Reportistica Regolamentare' },
+  'exp.mmg.role': { en: 'Legal & Compliance Intern', es: 'Pasante, Legal & Compliance', it: 'Tirocinante, Legale & Compliance' },
+  'exp.mmg.b1': {
+    en: 'Automated FATCA and CRS regulatory reporting for 6,000+ accounts across two international entities, replacing a fully manual process and establishing the foundation for long-term reporting efficiency.',
+    es: 'Automaticé los reportes regulatorios de FATCA y CRS para más de 6,000 cuentas en dos entidades internacionales, reemplazando un proceso completamente manual y sentando las bases para una eficiencia sostenida en la reportería.',
+    it: 'Ho automatizzato la reportistica regolamentare FATCA e CRS per oltre 6.000 conti su due entità internazionali, sostituendo un processo interamente manuale e creando le basi per un\'efficienza di lungo termine nella rendicontazione.'
+  },
+  'exp.mmg.b2': {
+    en: 'Led a full 3-week reporting cycle under strict regulatory deadlines, preparing and validating XML submissions and resolving data discrepancies across 300+ accounts for the Panamanian Tax Authority (DGI).',
+    es: 'Lideré un ciclo completo de reportería de 3 semanas bajo plazos regulatorios estrictos, preparando y validando presentaciones XML y resolviendo discrepancias de datos en más de 300 cuentas para la Dirección General de Ingresos de Panamá (DGI).',
+    it: 'Ho guidato un ciclo completo di reportistica di 3 settimane entro scadenze regolamentari rigide, preparando e validando le trasmissioni XML e risolvendo discrepanze di dati su oltre 300 conti per la Direzione Generale delle Entrate di Panama (DGI).'
+  },
+  'exp.mmg.b3': {
+    en: 'Built the bank\'s first centralized PEP catalog covering 10,000+ records to ensure compliance with SBP Agreement 1-2025 and standardize due diligence controls across the organization.',
+    es: 'Construí el primer catálogo centralizado de PEP del banco, cubriendo más de 10,000 registros, para asegurar el cumplimiento del Acuerdo 1-2025 de la SBP y estandarizar los controles de debida diligencia en toda la organización.',
+    it: 'Ho creato il primo catalogo PEP centralizzato della banca, che copre oltre 10.000 record, per garantire la conformità all\'Accordo 1-2025 della SBP e standardizzare i controlli di due diligence in tutta l\'organizzazione.'
+  },
+
+  'exp.metro.period': { en: 'Jul 2024 to Aug 2024', es: 'Julio 2024 a Agosto 2024', it: 'Luglio 2024 a Agosto 2024' },
+  'exp.metro.loc': { en: 'Panama City, Panama', es: 'Ciudad de Panamá, Panamá', it: 'Città di Panama, Panama' },
+  'exp.metro.tag': { en: 'FP&A · Financial Reporting', es: 'FP&A · Reportería Financiera', it: 'FP&A · Reportistica Finanziaria' },
+  'exp.metro.role': { en: 'Finance Intern', es: 'Pasante, Finanzas', it: 'Tirocinante, Finanza' },
+  'exp.metro.b1': {
+    en: 'Built an automated Excel-based reporting tool consolidating monthly and annual performance across 4+ business lines for a $1.9B asset bank.',
+    es: 'Construí una herramienta automatizada de reportería en Excel que consolida el desempeño mensual y anual de más de 4 líneas de negocio para un banco con 1.9 mil millones en activos.',
+    it: 'Ho sviluppato uno strumento automatizzato di reportistica basato su Excel che consolida le performance mensili e annuali di oltre 4 linee di business per una banca da 1,9 miliardi di attivi.'
+  },
+  'exp.metro.b2': {
+    en: 'Integrated Cognos data to automate variance analysis and KPI tracking across a $35M+ annual expense base, replacing a consolidation process that previously took multiple weeks.',
+    es: 'Integré datos de Cognos para automatizar el análisis de variaciones y el seguimiento de KPIs sobre una base de gastos anuales de más de 35 millones, reemplazando un proceso de consolidación que antes tomaba varias semanas.',
+    it: 'Ho integrato i dati Cognos per automatizzare l\'analisi degli scostamenti e il monitoraggio dei KPI su una base di costi annui di oltre 35 milioni, sostituendo un processo di consolidamento che in precedenza richiedeva settimane.'
+  },
+  'exp.metro.b3': {
+    en: 'Presented the reporting framework to three Vice Presidents, refining metrics and improving the timeliness of financial results across business units.',
+    es: 'Presenté el framework de reportería a tres Vicepresidentes, refinando las métricas y mejorando la oportunidad con la que se entregan los resultados financieros en todas las unidades de negocio.',
+    it: 'Ho presentato il framework di reportistica a tre Vicepresidenti, affinando le metriche e migliorando la tempestività con cui vengono consegnati i risultati finanziari nelle diverse unità di business.'
+  },
+
+  'exp.psu.period': { en: 'Sep 2025 to May 2026', es: 'Sept 2025 a Mayo 2026', it: 'Set 2025 a Maggio 2026' },
+  'exp.psu.loc': { en: 'State College, PA', es: 'State College, PA', it: 'State College, PA' },
+  'exp.psu.tag': { en: 'Service · Community', es: 'Servicio · Comunidad', it: 'Servizio · Comunità' },
+  'exp.psu.role': { en: 'Front Desk, Commons Residential Community', es: 'Recepción, Commons Residential Community', it: 'Reception, Commons Residential Community' },
+  'exp.psu.b1': {
+    en: 'Handle daily package logistics, mail distribution, and resident check-ins using internal tracking systems, maintaining accurate records across a residential community of hundreds of students.',
+    es: 'Manejo la logística diaria de paquetería, distribución de correspondencia y registro de residentes usando sistemas internos de seguimiento, manteniendo registros precisos en una comunidad residencial de cientos de estudiantes.',
+    it: 'Gestisco la logistica quotidiana di pacchi, la distribuzione della corrispondenza e il check-in dei residenti tramite sistemi interni di tracciamento, mantenendo registrazioni accurate in una comunità residenziale di centinaia di studenti.'
+  },
+  'exp.psu.b2': {
+    en: 'Serve as the first point of contact for a high-traffic residential community while carrying a full course load through my final year at Penn State.',
+    es: 'Soy el primer punto de contacto de una comunidad residencial de alto tránsito mientras curso una carga académica completa en mi último año en Penn State.',
+    it: 'Sono il primo punto di contatto per una comunità residenziale ad alto traffico, portando avanti un carico accademico completo nell\'ultimo anno alla Penn State.'
+  },
+  'exp.psu.b3': {
+    en: 'Manage a steady flow of resident needs, logistics, and real-time problem-solving across a diverse student population. It is not finance, but it keeps you grounded and sharpens how you deal with people from different backgrounds under pressure.',
+    es: 'Gestiono un flujo constante de necesidades de residentes, logística y resolución de problemas en tiempo real con una población estudiantil diversa. No es finanzas, pero te mantiene con los pies en la tierra y afina cómo tratas bajo presión a personas de distintos orígenes.',
+    it: 'Gestisco un flusso costante di richieste dei residenti, logistica e problem-solving in tempo reale con una popolazione studentesca eterogenea. Non è finanza, ma aiuta a restare con i piedi per terra e affina il modo in cui si gestiscono sotto pressione persone di provenienze diverse.'
+  },
+
+  'exp.bbt.period': { en: 'Mar 2022 to Jul 2022', es: 'Marzo 2022 a Julio 2022', it: 'Mar 2022 a Luglio 2022' },
+  'exp.bbt.loc': { en: 'Panama City, Panama', es: 'Ciudad de Panamá, Panamá', it: 'Città di Panama, Panama' },
+  'exp.bbt.tag': { en: 'Accounting · Operations', es: 'Contabilidad · Operaciones', it: 'Contabilità · Operations' },
+  'exp.bbt.role': { en: 'Accounting Intern', es: 'Pasante, Contabilidad', it: 'Tirocinante, Contabilità' },
+  'exp.bbt.b1': {
+    en: 'Compiled and analyzed daily revenue and expense reports across 15 operations, preparing consolidated monthly financial summaries for management oversight of multi-location performance.',
+    es: 'Recopilé y analicé reportes diarios de ingresos y gastos de 15 operaciones, preparando resúmenes financieros mensuales consolidados para la supervisión gerencial del desempeño en múltiples ubicaciones.',
+    it: 'Ho raccolto e analizzato report giornalieri di ricavi e costi su 15 operations, preparando riepiloghi finanziari mensili consolidati per la supervisione gestionale delle performance multi-sede.'
+  },
+
+  // PROJECTS
+  'proj.label': { en: 'Selected Work', es: 'Trabajos Seleccionados', it: 'Lavori Selezionati' },
+  'proj.title': { en: 'Personal Projects', es: 'Proyectos Personales', it: 'Progetti Personali' },
+  'proj.intro': {
+    en: 'A mix of independent and group work from coursework and outside the classroom. Each one is something I was genuinely invested in, not a box-checking exercise.',
+    es: 'Una mezcla de trabajo individual y grupal, tanto de clase como fuera de ella. Cada uno es algo en lo que realmente me involucré, no un ejercicio para cumplir con un requisito.',
+    it: 'Un mix di lavori individuali e di gruppo, dentro e fuori dai corsi. Ciascuno è qualcosa in cui mi sono davvero impegnato, non un esercizio solo per spuntare una casella.'
+  },
+  'proj.type.independent': { en: 'Independent Project', es: 'Proyecto Individual', it: 'Progetto Individuale' },
+  'proj.type.group': { en: 'Group Project', es: 'Proyecto Grupal', it: 'Progetto di Gruppo' },
+  'proj.type.indev': { en: 'In Development', es: 'En Desarrollo', it: 'In Sviluppo' },
+  'proj.dl.report': { en: 'Download Report', es: 'Descargar Informe', it: 'Scarica Report' },
+  'proj.dl.model': { en: 'Download Model', es: 'Descargar Modelo', it: 'Scarica Modello' },
+  'proj.dl.deck': { en: 'Download Deck', es: 'Descargar Presentación', it: 'Scarica Presentazione' },
+
+  'proj.wmt.title': { en: 'Walmart (NYSE: WMT) Equity Research', es: 'Walmart (NYSE: WMT) Equity Research', it: 'Walmart (NYSE: WMT) Equity Research' },
+  'proj.wmt.tag': { en: 'Valuation', es: 'Valuación', it: 'Valutazione' },
+  'proj.wmt.desc': {
+    en: 'Initiated coverage on Walmart with an Overweight rating and a $97 price target, built on a 70 / 30 blended DCF and trading comps. The thesis: the market is underpricing Walmart\'s margin expansion from higher-margin revenue streams like Walmart Connect (advertising) and Walmart+. Modeled EBIT margin reaching 6.2% by FY2031 against a consensus of roughly 4.8%, and defended the 140bps gap as the real source of upside. Includes a full sensitivity table across WACC and exit multiples.',
+    es: 'Inicié cobertura sobre Walmart con una recomendación de Overweight y un precio objetivo de $97, basado en una mezcla 70 / 30 de DCF y múltiplos comparables. La tesis: el mercado está subvalorando la expansión de márgenes de Walmart que viene de líneas de mayor margen como Walmart Connect (publicidad) y Walmart+. Modelé un margen EBIT que llega al 6.2% para el FY2031 frente a un consenso cercano al 4.8%, y defendí esa brecha de 140 puntos base como la verdadera fuente de upside. Incluye una tabla de sensibilidad completa sobre WACC y múltiplos de salida.',
+    it: 'Ho avviato la copertura su Walmart con un rating Overweight e un target price di 97 dollari, costruito su un blend 70 / 30 tra DCF e multipli di mercato. La tesi: il mercato sta sottovalutando l\'espansione dei margini di Walmart derivante da linee a più alto margine come Walmart Connect (pubblicità) e Walmart+. Ho modellato un margine EBIT al 6,2% nel FY2031 contro un consenso di circa il 4,8%, difendendo il gap di 140 punti base come la vera fonte di upside. Include una tabella di sensibilità completa su WACC e multipli di uscita.'
+  },
+
+  'proj.fatca.title': { en: 'FATCA and CRS vs. Game Theory', es: 'FATCA y CRS vs. la Teoría de Juegos', it: 'FATCA e CRS vs. la Teoria dei Giochi' },
+  'proj.fatca.tag': { en: 'Compliance · Game Theory', es: 'Compliance · Teoría de Juegos', it: 'Compliance · Teoria dei Giochi' },
+  'proj.fatca.desc': {
+    en: 'I built this site mostly because I connected game theory with tax compliance after studying it in class, and I wanted to make something where the reader could walk away understanding more about compliance while also getting a sense of how I think through problems. The experience is interactive. You click through FATCA and CRS framed as a coordination game where each banking jurisdiction decides whether to cooperate with automatic information exchange or defect. Try it, it only takes a few minutes.',
+    es: 'Construí este sitio principalmente porque relacioné la teoría de juegos con el cumplimiento tributario después de estudiarla en clase, y quise hacer algo donde el lector pudiera salir entendiendo más sobre compliance y a la vez viendo cómo pienso y resuelvo problemas. La experiencia es interactiva. Recorres FATCA y CRS presentados como un juego de coordinación en el que cada jurisdicción bancaria decide si cooperar con el intercambio automático de información o desviarse. Pruébalo, solo toma unos minutos.',
+    it: 'Ho costruito questo sito soprattutto perché ho collegato la teoria dei giochi alla compliance fiscale dopo averla studiata a lezione, e volevo realizzare qualcosa in cui il lettore potesse uscirne capendo meglio la compliance e, allo stesso tempo, farsi un\'idea di come ragiono sui problemi. L\'esperienza è interattiva. Si attraversano FATCA e CRS presentati come un gioco di coordinamento in cui ogni giurisdizione bancaria decide se cooperare allo scambio automatico di informazioni o defezionare. Provalo, richiede solo qualche minuto.'
+  },
+  'proj.fatca.link': { en: 'View Live Site', es: 'Ver Sitio en Vivo', it: 'Vai al Sito' },
+
+  'proj.gig.title': { en: 'GigLedger: FinTech Series A Pitch', es: 'GigLedger: Presentación Serie A de FinTech', it: 'GigLedger: Pitch Series A FinTech' },
+  'proj.gig.tag': { en: 'VC Valuation · FinTech', es: 'Valuación VC · FinTech', it: 'Valutazione VC · FinTech' },
+  'proj.gig.desc': {
+    en: 'Developed and pitched GigLedger, an original FinTech concept targeting the 64M+ Americans in the gig economy. The platform combines four services into one: automated tax withholding, invoice financing, income smoothing, and gig-calibrated retirement. I led the technical architecture side of the pitch. Together we built the full investment case including market sizing, four-tier revenue model, DCF valuation, WACC derivation, and a $15M Series A ask at a $45M pre-money valuation. Defended assumptions under investor-style pushback.',
+    es: 'Desarrollamos y presentamos GigLedger, un concepto original de FinTech dirigido a los más de 64 millones de estadounidenses en la economía gig. La plataforma combina cuatro servicios en uno: retención automática de impuestos, financiamiento de facturas, suavizado de ingresos, y plan de retiro calibrado al trabajo independiente. Yo lideré el lado de arquitectura técnica del pitch. Juntos construimos el caso de inversión completo, incluyendo dimensionamiento de mercado, modelo de ingresos en cuatro capas, valuación por DCF, derivación del WACC, y un pedido de 15 millones en Serie A a una valuación pre-money de 45 millones. Defendimos los supuestos bajo cuestionamientos al estilo de inversionistas.',
+    it: 'Abbiamo sviluppato e presentato GigLedger, un concept FinTech originale rivolto agli oltre 64 milioni di americani nella gig economy. La piattaforma integra quattro servizi in uno: trattenuta fiscale automatizzata, finanziamento delle fatture, livellamento dei flussi di reddito, e pensione calibrata sul lavoro indipendente. Io ho guidato il lato dell\'architettura tecnica del pitch. Insieme abbiamo costruito l\'intero investment case: stima del mercato, revenue model su quattro livelli, valutazione DCF, derivazione del WACC, e una richiesta di 15 milioni in Serie A a una valutazione pre-money di 45 milioni. Abbiamo difeso le ipotesi sotto le domande tipiche degli investitori.'
+  },
+  'proj.gig.credits': {
+    en: 'With Ramin Khan (CEO) and Jonathan Chin (CFO).',
+    es: 'Con Ramin Khan (CEO) y Jonathan Chin (CFO).',
+    it: 'Con Ramin Khan (CEO) e Jonathan Chin (CFO).'
+  },
+  'proj.gig.date': { en: 'Spring 2026', es: 'Primavera 2026', it: 'Primavera 2026' },
+
+  'proj.pty.title': {
+    en: 'Why Venture Capital Hasn\'t Taken Root in Panama',
+    es: 'Por Qué el Venture Capital No Ha Echado Raíces en Panamá',
+    it: 'Perché il Venture Capital Non Ha Attecchito a Panama'
+  },
+  'proj.pty.tag': { en: 'Research', es: 'Investigación', it: 'Ricerca' },
+  'proj.pty.desc': {
+    en: 'Research paper examining why Panama, despite its role as a regional financial hub, lacks a meaningful venture capital ecosystem. Comparative analysis against Chile, Colombia, and Mexico across legal infrastructure for startups, IP protection, exit opportunities, tax incentives, and talent pool. Target length 8 to 12 pages with supporting data, charts, and sources. The working subtitle is "A Structural Diagnosis."',
+    es: 'Paper de investigación que examina por qué Panamá, a pesar de su papel como hub financiero regional, carece de un ecosistema significativo de venture capital. Análisis comparativo con Chile, Colombia y México en infraestructura legal para startups, protección de propiedad intelectual, oportunidades de salida, incentivos fiscales, y pool de talento. Longitud objetivo de 8 a 12 páginas con datos, gráficos y fuentes. El subtítulo de trabajo es "Un Diagnóstico Estructural."',
+    it: 'Paper di ricerca che analizza perché Panama, nonostante il suo ruolo di hub finanziario regionale, non abbia un ecosistema di venture capital significativo. Analisi comparativa con Cile, Colombia e Messico su infrastruttura legale per startup, tutela della proprietà intellettuale, opportunità di exit, incentivi fiscali e bacino di talenti. Lunghezza prevista di 8-12 pagine con dati, grafici e fonti. Il sottotitolo di lavoro è "Una Diagnosi Strutturale."'
+  },
+  'proj.pty.status': { en: 'In Progress', es: 'En Progreso', it: 'In Corso' },
+
+  // SKILLS
+  'skills.label': { en: 'Toolkit', es: 'Herramientas', it: 'Strumenti' },
+  'skills.title': {
+    en: 'Skills, Certifications & Awards',
+    es: 'Habilidades, Certificaciones y Reconocimientos',
+    it: 'Competenze, Certificazioni e Riconoscimenti'
+  },
+  'skills.g1': { en: 'Technical', es: 'Técnico', it: 'Tecnico' },
+  'skills.g2': { en: 'Finance', es: 'Finanzas', it: 'Finanza' },
+  'skills.g3': { en: 'Compliance', es: 'Compliance', it: 'Compliance' },
+  'skills.g4': { en: 'Certifications & Awards', es: 'Certificaciones y Reconocimientos', it: 'Certificazioni e Riconoscimenti' },
+  'skills.fm': { en: 'Financial Modeling', es: 'Modelaje Financiero', it: 'Modellazione Finanziaria' },
+  'skills.dcf': { en: 'DCF Valuation', es: 'Valuación DCF', it: 'Valutazione DCF' },
+  'skills.fpa': { en: 'FP&A Reporting', es: 'Reportería FP&A', it: 'Reportistica FP&A' },
+  'skills.var': { en: 'Variance Analysis', es: 'Análisis de Variaciones', it: 'Analisi degli Scostamenti' },
+  'skills.kpi': { en: 'KPI Dashboards', es: 'Dashboards de KPIs', it: 'Dashboard KPI' },
+  'skills.pa': { en: 'Portfolio Analysis', es: 'Análisis de Portafolios', it: 'Analisi di Portafoglio' },
+  'skills.mc': { en: 'Monte Carlo Simulation', es: 'Simulación Monte Carlo', it: 'Simulazione Monte Carlo' },
+  'skills.fc': { en: 'FATCA / CRS Reporting', es: 'Reportería FATCA / CRS', it: 'Reportistica FATCA / CRS' },
+  'skills.pep': { en: 'PEP Screening', es: 'Screening de PEP', it: 'Screening PEP' },
+  'skills.xml': { en: 'XML Validation', es: 'Validación XML', it: 'Validazione XML' },
+  'skills.bmc': { en: 'Bloomberg Market Concepts (In Progress)', es: 'Bloomberg Market Concepts (En Progreso)', it: 'Bloomberg Market Concepts (In Corso)' },
+  'skills.dl': { en: 'Dean\'s List (3 semesters)', es: 'Cuadro de Honor (3 semestres)', it: 'Dean\'s List (3 semestri)' },
+
+  // BEYOND
+  'bey.label': { en: 'The Full Picture', es: 'El Panorama Completo', it: 'Il Quadro Completo' },
+  'bey.title': { en: 'Beyond the Numbers', es: 'Más Allá de los Números', it: 'Oltre i Numeri' },
+  'bey.p1': {
+    en: 'Finance is what I do, but it is not all I am. I grew up in Panama, studied at Penn State in State College, and spent a semester in Madrid. Those experiences shaped how I read a room, pick up on context, and connect with people from different backgrounds.',
+    es: 'Finanzas es a lo que me dedico, pero no es todo lo que soy. Crecí en Panamá, estudié en Penn State en State College, y pasé un semestre en Madrid. Esas experiencias moldearon cómo leo una sala, cómo capto el contexto, y cómo me conecto con gente de distintos orígenes.',
+    it: 'La finanza è ciò che faccio, ma non è tutto ciò che sono. Sono cresciuto a Panama, ho studiato alla Penn State di State College, e ho trascorso un semestre a Madrid. Quelle esperienze hanno plasmato il modo in cui leggo una stanza, colgo il contesto e mi connetto con persone di provenienze diverse.'
+  },
+  'bey.p2': {
+    en: 'I like the outdoors. I have been fishing the Pacific since I was a kid, and I play golf whenever I can. When I travel, I enjoy eating, seeing how people do business differently, and picking up context you cannot get from a report. These are not resume fillers. They are the kinds of things that come up in the conversations that actually matter, and I have learned that the ability to connect with someone over something real is often as valuable as whatever is on the spreadsheet.',
+    es: 'Me gustan las actividades al aire libre. Llevo pescando en el Pacífico desde niño, y juego golf cada vez que puedo. Cuando viajo, disfruto la comida, ver cómo hace negocios la gente de otros lugares, y captar contexto que no se encuentra en ningún reporte. Esto no es relleno de currículum. Son las cosas que surgen en las conversaciones que realmente importan, y he aprendido que poder conectar con alguien sobre algo real suele valer tanto como lo que haya en la hoja de cálculo.',
+    it: 'Mi piace stare all\'aperto. Pesco nel Pacifico da quando ero bambino, e gioco a golf ogni volta che posso. Quando viaggio, mi piace mangiare, osservare come la gente fa business in modi diversi, e cogliere il contesto che non puoi trovare in un report. Non sono riempitivi da curriculum. Sono le cose che emergono nelle conversazioni che contano davvero, e ho imparato che saper creare un legame su qualcosa di autentico spesso vale quanto ciò che c\'è nel foglio di calcolo.'
+  },
+  'bey.p3': {
+    en: 'I am also genuinely curious about how the world is organized. After learning about game theory in class, I started seeing how the same logic applied to things like tax compliance and cross-border coordination. That kind of cross-wiring is what makes finance interesting to me in the first place.',
+    es: 'También soy genuinamente curioso sobre cómo está organizado el mundo. Después de ver teoría de juegos en clase, empecé a notar cómo la misma lógica se aplicaba a cosas como el cumplimiento tributario y la coordinación transfronteriza. Ese tipo de conexiones cruzadas es lo que hace que las finanzas me resulten interesantes en primer lugar.',
+    it: 'Sono anche genuinamente curioso di come è organizzato il mondo. Dopo aver studiato la teoria dei giochi a lezione, ho iniziato a vedere come la stessa logica si applicasse a cose come la compliance fiscale e il coordinamento tra giurisdizioni. Sono proprio questi collegamenti trasversali a rendere la finanza interessante per me.'
+  },
+  'bey.lang': { en: 'Languages', es: 'Idiomas', it: 'Lingue' },
+  'bey.es': { en: 'Spanish', es: 'Español', it: 'Spagnolo' },
+  'bey.en': { en: 'English', es: 'Inglés', it: 'Inglese' },
+  'bey.native': { en: 'Native', es: 'Nativo', it: 'Madrelingua' },
+  'bey.fluent': { en: 'Fluent', es: 'Fluido', it: 'Fluente' },
+
+  'bey.int.fish.title': { en: 'Sportfishing', es: 'Pesca Deportiva', it: 'Pesca Sportiva' },
+  'bey.int.fish.desc': {
+    en: 'Grew up fishing the Pacific coast of Panama. Offshore fishing is what I am used to. There is no better lesson in reading conditions and staying patient than a long day on the water.',
+    es: 'Crecí pescando en la costa pacífica de Panamá. La pesca de altura es a la que estoy acostumbrado. No hay mejor lección para aprender a leer las condiciones del mar y tener paciencia que un día largo en el agua.',
+    it: 'Sono cresciuto pescando lungo la costa pacifica di Panama. La pesca al largo è ciò a cui sono abituato. Nessuna lezione insegna a leggere le condizioni e a restare pazienti meglio di una lunga giornata in mare.'
+  },
+  'bey.int.golf.title': { en: 'Golf', es: 'Golf', it: 'Golf' },
+  'bey.int.golf.desc': {
+    en: 'I play because it is genuinely fun, and because it forces me to keep my head together when I am playing badly. When a bad shot is nobody\'s fault but mine, I learn a lot about how I handle frustration.',
+    es: 'Juego porque es genuinamente divertido, y porque me obliga a mantener la cabeza en su lugar cuando estoy jugando mal. Cuando un mal tiro no es culpa de nadie más que mía, aprendo bastante sobre cómo manejo la frustración.',
+    it: 'Gioco perché mi diverte davvero, e perché mi obbliga a tenere la testa a posto quando gioco male. Quando un colpo sbagliato è soltanto colpa mia, imparo molto su come gestisco la frustrazione.'
+  },
+  'bey.int.travel.title': { en: 'International Travel and Cuisine', es: 'Viajes Internacionales y Gastronomía', it: 'Viaggi Internazionali e Cucina' },
+  'bey.int.travel.desc': {
+    en: 'I have spent time in Panama, the US, Spain, and other parts of Europe. I go to eat well, to see how people do business differently, and to pick up context you cannot get from a report.',
+    es: 'He pasado tiempo en Panamá, Estados Unidos, España, y otras partes de Europa. Disfruto la comida local, ver cómo hace negocios la gente en otros lugares, y captar contexto que no encuentras en un reporte.',
+    it: 'Ho trascorso tempo a Panama, negli Stati Uniti, in Spagna e in altre parti d\'Europa. Mi piace mangiare bene, osservare come la gente fa business in modi diversi, e cogliere il contesto che non si trova in un report.'
+  },
+  'bey.int.mkt.title': { en: 'Financial Markets', es: 'Mercados Financieros', it: 'Mercati Finanziari' },
+  'bey.int.mkt.desc': {
+    en: 'I follow markets because I find the dynamics genuinely interesting, especially at the intersection of macroeconomics, geopolitics, and capital flows. I find it fascinating how a single presidential decision or a single corporate announcement can move billions in market value overnight. I read Morning Brew, the NYT, and Bloomberg News regularly to stay on top of what is actually happening.',
+    es: 'Sigo los mercados porque las dinámicas me parecen genuinamente interesantes, sobre todo en la intersección entre macroeconomía, geopolítica y flujos de capital. Me parece fascinante cómo una sola decisión presidencial o un solo anuncio corporativo puede mover miles de millones en valor de mercado de la noche a la mañana. Leo Morning Brew, el NYT y Bloomberg News regularmente para estar al tanto de lo que está pasando de verdad.',
+    it: 'Seguo i mercati perché trovo le dinamiche genuinamente interessanti, soprattutto all\'incrocio tra macroeconomia, geopolitica e flussi di capitale. Trovo affascinante come una singola decisione presidenziale o un singolo annuncio aziendale possa spostare miliardi di valore di mercato in una notte. Leggo regolarmente Morning Brew, il NYT e Bloomberg News per stare al passo con ciò che sta davvero succedendo.'
+  },
+
+  // CONTACT
+  'con.label': { en: 'Let\'s Talk', es: 'Hablemos', it: 'Parliamone' },
+  'con.title': { en: 'Contact', es: 'Contacto', it: 'Contatti' },
+  'con.head': {
+    en: 'Open to opportunities in <em>Panama City</em>, <em>Rome</em>, and the <em>United States</em>.',
+    es: 'Abierto a oportunidades en <em>Ciudad de Panamá</em>, <em>Roma</em>, y <em>Estados Unidos</em>.',
+    it: 'Aperto a opportunità a <em>Città di Panama</em>, <em>Roma</em>, e negli <em>Stati Uniti</em>.'
+  },
+  'con.sub': {
+    en: 'Finance, FP&A, banking, and advisory environments are all on the table. If the work is serious and interesting, I want to hear from you. Cross-border roles are welcome.',
+    es: 'Finanzas, FP&A, banca y asesoría están todos sobre la mesa. Si el trabajo es serio e interesante, quiero saber de ti. Los roles transfronterizos son bienvenidos.',
+    it: 'Finanza, FP&A, banking e advisory sono tutti sul tavolo. Se il lavoro è serio e interessante, sentiamoci. I ruoli transfrontalieri sono benvenuti.'
+  },
+  'con.avail': {
+    en: 'Open to Work starting May 2026',
+    es: 'Disponible a partir de mayo 2026',
+    it: 'Disponibile a partire da maggio 2026'
+  },
+  'con.email': { en: 'Email', es: 'Correo', it: 'Email' },
+  'con.linkedin': { en: 'LinkedIn', es: 'LinkedIn', it: 'LinkedIn' },
+  'con.based': { en: 'Based', es: 'Ubicación', it: 'Sede' },
+  'con.based.val': {
+    en: 'Panama City, Panama · Currently State College, PA · Available to relocate May 2026',
+    es: 'Ciudad de Panamá, Panamá · Actualmente en State College, PA · Disponible para reubicarme a partir de mayo 2026',
+    it: 'Città di Panama, Panama · Attualmente a State College, PA · Disponibile a trasferirmi a partire da maggio 2026'
+  },
+
+  // FOOTER
+  'footer': {
+    en: 'Winston Spadafora &nbsp;·&nbsp; Finance and International Business &nbsp;·&nbsp; 2026',
+    es: 'Winston Spadafora &nbsp;·&nbsp; Finanzas y Negocios Internacionales &nbsp;·&nbsp; 2026',
+    it: 'Winston Spadafora &nbsp;·&nbsp; Finanza e Business Internazionale &nbsp;·&nbsp; 2026'
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[key] && i18n[key][lang]) {
+      el.innerHTML = i18n[key][lang];
+    }
+  });
+  document.documentElement.lang = lang;
+  localStorage.setItem('portfolio_lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.lang));
+});
+
+const savedLang = localStorage.getItem('portfolio_lang') || 'en';
+if (savedLang !== 'en') setLang(savedLang);
+
+// Scroll progress bar
+const progress = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+});
+
+// Nav shadow on scroll
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Active nav links
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('revealed');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Language bar animation
+const langBars = document.querySelectorAll('.lang-fill');
+const langObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      langBars.forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+      langObserver.disconnect();
+    }
+  });
+}, { threshold: 0.4 });
+const langSection = document.getElementById('lang-bars');
+if (langSection) langObserver.observe(langSection);
+</script>
+</body>
+</html>
